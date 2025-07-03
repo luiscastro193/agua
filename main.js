@@ -24,5 +24,13 @@ function index(difference) {
 
 window.onhashchange = () => location.reload();
 const order = shuffle([...Array(nMessages).keys()], await PRNG(location.hash.slice(1)));
-let [, type, date] = location.hash.slice(1).match(/([^\d]+)(\d+)/);
-document.querySelector('img').src = `images/${type}${order[index(daysSince(date))]}.png`;
+const [, type, date] = location.hash.slice(1).match(/([^\d]+)(\d+)/);
+const img = document.querySelector('img');
+
+function updateImage() {
+	let src = `images/${type}${order[index(daysSince(date))]}.png`;
+	if (src != img.src) img.src = src;
+	setTimeout(updateImage, 100);
+}
+
+updateImage();
